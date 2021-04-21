@@ -7,9 +7,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ContainerNode;
+import com.fasterxml.jackson.databind.node.NullNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.ValueNode;
-import com.github.arteam.simplejsonrpc.core.annotation.JsonRpcError;
+import com.github.arteam.simplejsonrpc.core.annotation.Error;
 import com.github.arteam.simplejsonrpc.core.domain.*;
 import com.github.arteam.simplejsonrpc.server.metadata.ClassMetadata;
 import com.github.arteam.simplejsonrpc.server.metadata.ErrorDataResolver;
@@ -31,7 +32,6 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Optional;
 
 /**
  * Date: 07.06.14
@@ -67,6 +67,11 @@ public class JsonRpcServer {
      * Default Cache params specification
      */
     private static final CacheBuilderSpec DEFAULT_SPEC = CacheBuilderSpec.parse("expireAfterWrite=1h");
+    
+    /**
+     * Default ClassLoader
+     */
+    private static final ClassLoader DEFAULT_CLASSLOADER = ClassLoader.getPlatformClassLoader();
 
     /**
      * Cache of classes metadata
@@ -83,12 +88,13 @@ public class JsonRpcServer {
      * @param mapper           used-defined JSON mapper
      * @param cacheBuilderSpec classes metadata cache specification
      */
-    public JsonRpcServer(@NotNull ObjectMapper mapper, @NotNull CacheBuilderSpec cacheBuilderSpec) {
+    public JsonRpcServer(@NotNull ObjectMapper mapper, @NotNull CacheBuilderSpec cacheBuilderSpec, @NotNull ClassLoader classLoader) {
         this.mapper = mapper;
         classesMetadata = CacheBuilder.from(cacheBuilderSpec).build(
                 new CacheLoader<Class<?>, ClassMetadata>() {
                     @Override
                     public ClassMetadata load(Class<?> clazz) throws Exception {
+                    	
                         return Reflections.getClassMetadata(clazz);
                     }
                 });
@@ -105,7 +111,7 @@ public class JsonRpcServer {
      * Init JSON-RPC server with default parameters
      */
     public JsonRpcServer() {
-        this(new ObjectMapper(), DEFAULT_SPEC);
+        this(new ObjectMapper(), DEFAULT_SPEC, DEFAULT_CLASSLOADER);
     }
 
     /**
@@ -115,7 +121,7 @@ public class JsonRpcServer {
      * @return new JSON-RPC server
      */
     public static JsonRpcServer withMapper(@NotNull ObjectMapper mapper) {
-        return new JsonRpcServer(mapper, DEFAULT_SPEC);
+        return new JsonRpcServer(mapper, DEFAULT_SPEC, DEFAULT_CLASSLOADER);
     }
 
     /**
@@ -125,7 +131,17 @@ public class JsonRpcServer {
      * @return new JSON-RPC server
      */
     public static JsonRpcServer withCacheSpec(@NotNull CacheBuilderSpec cacheSpec) {
-        return new JsonRpcServer(new ObjectMapper(), cacheSpec);
+        return new JsonRpcServer(new ObjectMapper(), cacheSpec, DEFAULT_CLASSLOADER);
+    }
+    
+    /**
+     * Factory for creating a JSON-RPC server with a specific ClasLoader
+     *
+     * @param ClassLoader
+     * @return new JSON-RPC server
+     */
+    public static JsonRpcServer withClassLoader(@NotNull ClassLoader classLoader) {
+        return new JsonRpcServer(new ObjectMapper(), DEFAULT_SPEC, classLoader);
     }
 
     /**
@@ -222,7 +238,7 @@ public class JsonRpcServer {
     }
 
     /**
-     * Handles a runtime exception. If root exception is marked with {@link JsonRpcError} annotation,
+     * Handles a runtime exception. If root exception is marked with {@link Error} annotation,
      * it will be converted to appropriate error message.
      * Otherwise "Internal error" message will be returned.
      *
@@ -234,10 +250,10 @@ public class JsonRpcServer {
     private ErrorResponse handleError(@NotNull Request request, @NotNull Exception e) {
         Throwable rootCause = Throwables.getRootCause(e);
         Annotation[] annotations = rootCause.getClass().getAnnotations();
-        JsonRpcError jsonRpcErrorAnnotation =
-                Reflections.getAnnotation(annotations, JsonRpcError.class);
+        Error jsonRpcErrorAnnotation =
+                Reflections.getAnnotation(annotations, Error.class);
         if (jsonRpcErrorAnnotation == null) {
-            return new ErrorResponse(request.getId(), INTERNAL_ERROR);
+            return new ErrorResponse(request.getId(), new ErrorMessage(rootCause.hashCode(), rootCause.getMessage(), null));
         }
         int code = jsonRpcErrorAnnotation.code();
         String message = Strings.isNullOrEmpty(jsonRpcErrorAnnotation.message()) ?
@@ -246,7 +262,8 @@ public class JsonRpcServer {
             log.warn("Error message should not be empty");
             return new ErrorResponse(request.getId(), INTERNAL_ERROR);
         }
-        JsonNode data;
+        JsonNode data = null;
+        /*
         try {
             data = dataResolvers.get(rootCause.getClass())
                     .resolveData(rootCause)
@@ -255,7 +272,7 @@ public class JsonRpcServer {
         } catch (Exception e1) {
             log.error("Error while processing error data: ", e1);
             return new ErrorResponse(request.getId(), INTERNAL_ERROR);
-        }
+        }*/
         return new ErrorResponse(request.getId(), new ErrorMessage(code, message, data));
     }
 

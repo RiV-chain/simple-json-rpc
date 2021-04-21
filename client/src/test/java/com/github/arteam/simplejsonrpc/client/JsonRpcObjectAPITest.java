@@ -7,9 +7,9 @@ import com.github.arteam.simplejsonrpc.client.exception.JsonRpcException;
 import com.github.arteam.simplejsonrpc.client.object.FixedIntegerIdGenerator;
 import com.github.arteam.simplejsonrpc.client.object.FixedStringIdGenerator;
 import com.github.arteam.simplejsonrpc.client.object.TeamService;
-import com.github.arteam.simplejsonrpc.core.annotation.JsonRpcMethod;
+import com.github.arteam.simplejsonrpc.core.annotation.External;
 import com.github.arteam.simplejsonrpc.core.annotation.JsonRpcParam;
-import com.github.arteam.simplejsonrpc.core.annotation.JsonRpcService;
+import com.github.arteam.simplejsonrpc.core.annotation.Contract;
 import com.github.arteam.simplejsonrpc.core.domain.ErrorMessage;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.ISODateTimeFormat;
@@ -172,10 +172,10 @@ public class JsonRpcObjectAPITest extends BaseClientTest {
         }
     }
 
-    @JsonRpcService
+    @Contract
     static interface BogusTeamService {
 
-        @JsonRpcMethod
+        @External
         void bogusLogin(String username, @JsonRpcParam("password") String password);
     }
 
@@ -193,7 +193,7 @@ public class JsonRpcObjectAPITest extends BaseClientTest {
                 .withMessage("Method 'equals' is not JSON-RPC available");
     }
 
-    @JsonRpcService
+    @Contract
     public static interface MethodIsNotAnnotatedService {
 
         boolean find(@JsonRpcParam("name") String name);
@@ -213,10 +213,10 @@ public class JsonRpcObjectAPITest extends BaseClientTest {
                 .withMessage("Class 'java.util.zip.Checksum' is not annotated as @JsonRpcService");
     }
 
-    @JsonRpcService
+    @Contract
     static interface DuplicateParametersService {
 
-        @JsonRpcMethod
+        @External
         boolean find(@JsonRpcParam("code") String username, @JsonRpcParam("code") String code, @JsonRpcParam("number") int number);
     }
 

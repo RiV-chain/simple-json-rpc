@@ -1,9 +1,9 @@
 package com.github.arteam.simplejsonrpc.server.simple.service;
 
-import com.github.arteam.simplejsonrpc.core.annotation.JsonRpcMethod;
+import com.github.arteam.simplejsonrpc.core.annotation.External;
 import com.github.arteam.simplejsonrpc.core.annotation.JsonRpcOptional;
 import com.github.arteam.simplejsonrpc.core.annotation.JsonRpcParam;
-import com.github.arteam.simplejsonrpc.core.annotation.JsonRpcService;
+import com.github.arteam.simplejsonrpc.core.annotation.Contract;
 import com.github.arteam.simplejsonrpc.server.simple.domain.Player;
 import com.github.arteam.simplejsonrpc.server.simple.domain.Position;
 import com.github.arteam.simplejsonrpc.server.simple.domain.Team;
@@ -34,7 +34,7 @@ import java.util.stream.Stream;
  * Date: 7/27/14
  * Time: 8:46 PM
  */
-@JsonRpcService
+@Contract
 public class TeamService extends BaseService {
 
     private static final DateTimeFormatter fmt = ISODateTimeFormat.date().withZone(DateTimeZone.UTC);
@@ -50,12 +50,12 @@ public class TeamService extends BaseService {
             new Player("Victor", "Hedman", new Team("Tampa Bay Lightning", "NHL"), 77, Position.DEFENDER, date("1990-12-18"), 4.0))
             .collect(Collectors.toList());
 
-    @JsonRpcMethod
+    @External
     public boolean add(@JsonRpcParam("player") Player s) {
         return players.add(s);
     }
 
-    @JsonRpcMethod("find_by_birth_year")
+    @External("find_by_birth_year")
     public List<Player> findByBirthYear(@JsonRpcParam("birth_year") final int birthYear) {
         return players.stream().filter(player -> {
             int year = new DateTime(player.getBirthDate()).getYear();
@@ -63,7 +63,7 @@ public class TeamService extends BaseService {
         }).collect(Collectors.toList());
     }
 
-    @JsonRpcMethod
+    @External
     public Player findByInitials(@JsonRpcParam("firstName") final String firstName,
                                  @JsonRpcParam("lastName") final String lastName) {
         return players.stream()
@@ -72,7 +72,7 @@ public class TeamService extends BaseService {
                 .orElse(null);
     }
 
-    @JsonRpcMethod
+    @External
     public List<Player> find(@JsonRpcOptional @JsonRpcParam("position") @Nullable Position position,
                              @JsonRpcOptional @JsonRpcParam("number") @Nullable int number,
                              @JsonRpcOptional @JsonRpcParam("team") @NotNull Optional<Team> team,
@@ -92,7 +92,7 @@ public class TeamService extends BaseService {
         }).collect(Collectors.toList());
     }
 
-    @JsonRpcMethod
+    @External
     public List<Player> getPlayers() {
         return players;
     }
@@ -101,22 +101,22 @@ public class TeamService extends BaseService {
         return players;
     }
 
-    @JsonRpcMethod
+    @External
     private List<Player> privateGetPlayers() {
         return players;
     }
 
-    @JsonRpcMethod
+    @External
     public Player bogusFindByInitials(@JsonRpcParam("firstName") String firstName, String lastName) {
         return findByInitials(firstName, lastName);
     }
 
-    @JsonRpcMethod
+    @External
     public Player findByCapHit(@JsonRpcParam("cap") double capHit) {
         throw new IllegalStateException("Not implemented");
     }
 
-    @JsonRpcMethod
+    @External
     public long login(@JsonRpcParam("login") String login, @JsonRpcParam("password") String password) {
         if (!login.equals("CAFE") && !password.equals("BABE")) {
             throw new TeamServiceAuthException("Not authorized");
@@ -124,7 +124,7 @@ public class TeamService extends BaseService {
         return 0xCAFEBABE;
     }
 
-    @JsonRpcMethod
+    @External
     public long bogusMessageLogin(@JsonRpcParam("login") String login, @JsonRpcParam("password") String password) {
         if (!login.equals("CAFE") && !password.equals("BABE")) {
             throw new EmptyMessageTeamServiceException("Not authorized");
@@ -132,7 +132,7 @@ public class TeamService extends BaseService {
         return 0xCAFEBABE;
     }
 
-    @JsonRpcMethod
+    @External
     public long errorDataFieldLogin(@JsonRpcParam("login") String login, @JsonRpcParam("password") String password) {
         if (!login.equals("CAFE") && !password.equals("BABE")) {
             throw new ExceptionWithDataField("Detailed message", new String[]{"Data 1", "Data 2"});
@@ -140,7 +140,7 @@ public class TeamService extends BaseService {
         return 0xCAFEBABE;
     }
 
-    @JsonRpcMethod
+    @External
     public long errorDataGetterLogin(@JsonRpcParam("login") String login, @JsonRpcParam("password") String password) {
         if (!login.equals("CAFE") && !password.equals("BABE")) {
             throw new ExceptionWithDataGetter("Detailed message", new String[]{"Data 1", "Data 2"});
@@ -148,7 +148,7 @@ public class TeamService extends BaseService {
         return 0xCAFEBABE;
     }
 
-    @JsonRpcMethod
+    @External
     public long errorDataMultipleFieldsLogin(@JsonRpcParam("login") String login,
                                              @JsonRpcParam("password") String password) {
         if (!login.equals("CAFE") && !password.equals("BABE")) {
@@ -160,7 +160,7 @@ public class TeamService extends BaseService {
         return 0xCAFEBABE;
     }
 
-    @JsonRpcMethod
+    @External
     public long errorDataMultipleGettersLogin(@JsonRpcParam("login") String login,
                                               @JsonRpcParam("password") String password) {
         if (!login.equals("CAFE") && !password.equals("BABE")) {
@@ -172,7 +172,7 @@ public class TeamService extends BaseService {
         return 0xCAFEBABE;
     }
 
-    @JsonRpcMethod
+    @External
     public long errorDataMultipleMixedLogin(@JsonRpcParam("login") String login,
                                             @JsonRpcParam("password") String password) {
         if (!login.equals("CAFE") && !password.equals("BABE")) {
@@ -183,7 +183,7 @@ public class TeamService extends BaseService {
         return 0xCAFEBABE;
     }
 
-    @JsonRpcMethod
+    @External
     public long errorDataWrongMethodsLogin(@JsonRpcParam("login") String login,
                                            @JsonRpcParam("password") String password) {
         if (!login.equals("CAFE") && !password.equals("BABE")) {
@@ -194,19 +194,19 @@ public class TeamService extends BaseService {
         return 0xCAFEBABE;
     }
 
-    @JsonRpcMethod
+    @External
     public Player bogusFind(@JsonRpcParam("firstName") String firstName,
                             @JsonRpcParam("firstName") String lastName,
                             @JsonRpcParam("age") int age) {
         return null;
     }
 
-    @JsonRpcMethod
+    @External
     public List<Player> findPlayersByFirstNames(@JsonRpcParam("names") final List<String> names) {
         return players.stream().filter(player -> names.contains(player.getFirstName())).collect(Collectors.toList());
     }
 
-    @JsonRpcMethod
+    @External
     public List<Player> findPlayersByNumbers(@JsonRpcParam("numbers") final int... numbers) {
         return players.stream().filter(player -> {
             for (int number : numbers) {
@@ -218,7 +218,7 @@ public class TeamService extends BaseService {
         }).collect(Collectors.toList());
     }
 
-    @JsonRpcMethod
+    @External
     public <T> List<Player> genericFindPlayersByNumbers(@JsonRpcParam("numbers") final T... numbers) {
         return players.stream().filter(player -> {
             for (T number : numbers) {
@@ -230,7 +230,7 @@ public class TeamService extends BaseService {
         }).collect(Collectors.toList());
     }
 
-    @JsonRpcMethod
+    @External
     public Map<String, Double> getContractSums(@JsonRpcParam("contractLengths") Map<String, ? extends Number> contractLengths) {
         Map<String, Double> playerContractSums = Maps.newLinkedHashMap();
         for (Player player : players) {
@@ -241,7 +241,7 @@ public class TeamService extends BaseService {
     }
 
 
-    @JsonRpcMethod
+    @External
     public static Date date(@JsonRpcParam("textDate") String textDate) {
         return fmt.parseDateTime(textDate).toDate();
     }

@@ -6,10 +6,10 @@ import com.github.arteam.simplejsonrpc.client.ParamsType;
 import com.github.arteam.simplejsonrpc.client.domain.Player;
 import com.github.arteam.simplejsonrpc.client.domain.Position;
 import com.github.arteam.simplejsonrpc.client.domain.Team;
-import com.github.arteam.simplejsonrpc.core.annotation.JsonRpcMethod;
+import com.github.arteam.simplejsonrpc.core.annotation.External;
 import com.github.arteam.simplejsonrpc.core.annotation.JsonRpcOptional;
 import com.github.arteam.simplejsonrpc.core.annotation.JsonRpcParam;
-import com.github.arteam.simplejsonrpc.core.annotation.JsonRpcService;
+import com.github.arteam.simplejsonrpc.core.annotation.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -23,26 +23,26 @@ import java.util.Optional;
  * Date: 24.08.14
  * Time: 18:02
  */
-@JsonRpcService
+@Contract
 @JsonRpcId(TestIdGenerator.class)
 @JsonRpcParams(ParamsType.MAP)
 public interface TeamService extends BaseService {
 
-    @JsonRpcMethod
+    @External
     boolean add(@JsonRpcParam("player") Player s);
 
-    @JsonRpcMethod("find_by_birth_year")
+    @External("find_by_birth_year")
     List<Player> findByBirthYear(@JsonRpcParam("birth_year") int birthYear);
 
-    @JsonRpcMethod
+    @External
     Player findByInitials(@JsonRpcParam("firstName") String firstName,
                           @JsonRpcParam("lastName") String lastName);
 
-    @JsonRpcMethod("findByInitials")
+    @External("findByInitials")
     Optional<Player> optionalFindByInitials(@JsonRpcParam("firstName") String firstName,
                                             @JsonRpcParam("lastName") String lastName);
 
-    @JsonRpcMethod
+    @External
     List<Player> find(@JsonRpcOptional @JsonRpcParam("position") @Nullable Position position,
                       @JsonRpcOptional @JsonRpcParam("number") int number,
                       @JsonRpcOptional @JsonRpcParam("team") @NotNull Optional<Team> team,
@@ -51,18 +51,18 @@ public interface TeamService extends BaseService {
                       @JsonRpcOptional @JsonRpcParam("birthDate") @Nullable Date birthDate,
                       @JsonRpcOptional @JsonRpcParam("capHit") @NotNull Optional<Double> capHit);
 
-    @JsonRpcMethod
+    @External
     Player findByCapHit(@JsonRpcParam("cap") double capHit);
 
-    @JsonRpcMethod
+    @External
     List<Player> findPlayersByFirstNames(@JsonRpcParam("names") List<String> names);
 
-    @JsonRpcMethod
+    @External
     List<Player> findPlayersByNumbers(@JsonRpcParam("numbers") int... numbers);
 
-    @JsonRpcMethod
+    @External
     <T> List<Player> genericFindPlayersByNumbers(@JsonRpcParam("numbers") T... numbers);
 
-    @JsonRpcMethod
+    @External
     LinkedHashMap<String, Double> getContractSums(@JsonRpcParam("contractLengths") Map<String, ? extends Number> contractLengths);
 }

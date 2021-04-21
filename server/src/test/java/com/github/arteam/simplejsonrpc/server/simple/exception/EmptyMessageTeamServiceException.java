@@ -1,12 +1,12 @@
 package com.github.arteam.simplejsonrpc.server.simple.exception;
 
-import com.github.arteam.simplejsonrpc.core.annotation.JsonRpcError;
+import com.github.arteam.simplejsonrpc.core.annotation.Error;
 
 /**
  * Date: 7/31/14
  * Time: 6:23 PM
  */
-@JsonRpcError(code = -32000)
+@Error(code = -32000)
 public class EmptyMessageTeamServiceException extends RuntimeException {
 
     public EmptyMessageTeamServiceException(String message) {

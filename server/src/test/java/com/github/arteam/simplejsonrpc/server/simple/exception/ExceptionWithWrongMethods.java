@@ -1,9 +1,9 @@
 package com.github.arteam.simplejsonrpc.server.simple.exception;
 
-import com.github.arteam.simplejsonrpc.core.annotation.JsonRpcError;
+import com.github.arteam.simplejsonrpc.core.annotation.Error;
 import com.github.arteam.simplejsonrpc.core.annotation.JsonRpcErrorData;
 
-@JsonRpcError(code = -30005, message = "Error with wrong methods")
+@Error(code = -30005, message = "Error with wrong methods")
 public class ExceptionWithWrongMethods extends RuntimeException {
 
     private final String[] data;

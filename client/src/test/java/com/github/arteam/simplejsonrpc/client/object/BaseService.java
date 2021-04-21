@@ -3,9 +3,9 @@ package com.github.arteam.simplejsonrpc.client.object;
 import com.github.arteam.simplejsonrpc.client.JsonRpcParams;
 import com.github.arteam.simplejsonrpc.client.ParamsType;
 import com.github.arteam.simplejsonrpc.client.domain.Player;
-import com.github.arteam.simplejsonrpc.core.annotation.JsonRpcMethod;
+import com.github.arteam.simplejsonrpc.core.annotation.External;
 import com.github.arteam.simplejsonrpc.core.annotation.JsonRpcParam;
-import com.github.arteam.simplejsonrpc.core.annotation.JsonRpcService;
+import com.github.arteam.simplejsonrpc.core.annotation.Contract;
 
 import java.util.List;
 
@@ -13,20 +13,20 @@ import java.util.List;
  * Date: 11/17/14
  * Time: 9:59 PM
  */
-@JsonRpcService
+@Contract
 public interface BaseService {
 
-    @JsonRpcMethod
+    @External
     @JsonRpcParams(ParamsType.ARRAY)
     List<Player> getPlayers();
 
-    @JsonRpcMethod
+    @External
     @JsonRpcParams(ParamsType.ARRAY)
     Player getPlayer();
 
-    @JsonRpcMethod
+    @External
     long login(@JsonRpcParam("login") String login, @JsonRpcParam("password") String password);
 
-    @JsonRpcMethod
+    @External
     void logout(@JsonRpcParam("token") String token);
 }

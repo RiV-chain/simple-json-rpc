@@ -1,26 +1,26 @@
 package com.github.arteam.simplejsonrpc.server.simple.service;
 
-import com.github.arteam.simplejsonrpc.core.annotation.JsonRpcMethod;
-import com.github.arteam.simplejsonrpc.core.annotation.JsonRpcService;
+import com.github.arteam.simplejsonrpc.core.annotation.External;
+import com.github.arteam.simplejsonrpc.core.annotation.Contract;
 
 /**
  * Date: 8/2/14
  * Time: 6:25 PM
  */
-@JsonRpcService
+@Contract
 public class BogusService {
 
-    @JsonRpcMethod
+    @External
     public void bogus() {
         System.out.println("Bogus");
     }
 
-    @JsonRpcMethod("bogus")
+    @External("bogus")
     public void bogus2() {
         System.out.println("Bogus2");
     }
 
-    @JsonRpcMethod
+    @External
     public void notBogus() {
         System.out.println("Not bogus");
     }

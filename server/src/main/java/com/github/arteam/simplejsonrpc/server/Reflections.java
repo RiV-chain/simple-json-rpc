@@ -1,10 +1,10 @@
 package com.github.arteam.simplejsonrpc.server;
 
 import com.github.arteam.simplejsonrpc.core.annotation.JsonRpcErrorData;
-import com.github.arteam.simplejsonrpc.core.annotation.JsonRpcMethod;
+import com.github.arteam.simplejsonrpc.core.annotation.External;
 import com.github.arteam.simplejsonrpc.core.annotation.JsonRpcOptional;
 import com.github.arteam.simplejsonrpc.core.annotation.JsonRpcParam;
-import com.github.arteam.simplejsonrpc.core.annotation.JsonRpcService;
+import com.github.arteam.simplejsonrpc.core.annotation.Contract;
 import com.github.arteam.simplejsonrpc.server.metadata.ClassMetadata;
 import com.github.arteam.simplejsonrpc.server.metadata.ErrorDataResolver;
 import com.github.arteam.simplejsonrpc.server.metadata.MethodMetadata;
@@ -71,7 +71,7 @@ class Reflections {
             for (Method method : searchType.getDeclaredMethods()) {
                 String methodName = method.getName();
                 // Checks the annotation
-                JsonRpcMethod jsonRpcMethod = getAnnotation(method.getDeclaredAnnotations(), JsonRpcMethod.class);
+                External jsonRpcMethod = getAnnotation(method.getDeclaredAnnotations(), External.class);
                 if (jsonRpcMethod == null) {
                     continue;
                 }
@@ -100,7 +100,7 @@ class Reflections {
             searchType = searchType.getSuperclass();
         }
 
-        boolean isService = getAnnotation(clazz.getAnnotations(), JsonRpcService.class) != null;
+        boolean isService = getAnnotation(clazz.getAnnotations(), Contract.class) != null;
         try {
             return new ClassMetadata(isService, methodsMetadata.build());
         } catch (IllegalArgumentException e) {

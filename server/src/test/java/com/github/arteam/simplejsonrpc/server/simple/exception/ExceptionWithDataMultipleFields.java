@@ -1,9 +1,9 @@
 package com.github.arteam.simplejsonrpc.server.simple.exception;
 
-import com.github.arteam.simplejsonrpc.core.annotation.JsonRpcError;
+import com.github.arteam.simplejsonrpc.core.annotation.Error;
 import com.github.arteam.simplejsonrpc.core.annotation.JsonRpcErrorData;
 
-@JsonRpcError(code = -30002, message = "Error with data (multiple fields)")
+@Error(code = -30002, message = "Error with data (multiple fields)")
 public class ExceptionWithDataMultipleFields extends RuntimeException {
 
     @JsonRpcErrorData

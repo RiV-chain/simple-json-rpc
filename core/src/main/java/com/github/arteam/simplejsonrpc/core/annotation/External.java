@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface JsonRpcMethod {
+public @interface External {
 
     /**
      * Method RPC name. By default the actual method name is used.

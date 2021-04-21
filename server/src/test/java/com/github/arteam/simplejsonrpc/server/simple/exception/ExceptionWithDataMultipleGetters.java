@@ -1,9 +1,9 @@
 package com.github.arteam.simplejsonrpc.server.simple.exception;
 
-import com.github.arteam.simplejsonrpc.core.annotation.JsonRpcError;
+import com.github.arteam.simplejsonrpc.core.annotation.Error;
 import com.github.arteam.simplejsonrpc.core.annotation.JsonRpcErrorData;
 
-@JsonRpcError(code = -30003, message = "Error with data (multiple getters)")
+@Error(code = -30003, message = "Error with data (multiple getters)")
 public class ExceptionWithDataMultipleGetters extends RuntimeException {
 
     private final String[] data;

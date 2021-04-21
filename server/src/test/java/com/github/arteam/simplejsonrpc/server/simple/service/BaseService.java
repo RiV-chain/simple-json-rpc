@@ -1,6 +1,6 @@
 package com.github.arteam.simplejsonrpc.server.simple.service;
 
-import com.github.arteam.simplejsonrpc.core.annotation.JsonRpcMethod;
+import com.github.arteam.simplejsonrpc.core.annotation.External;
 
 /**
  * Date: 7/30/14
@@ -8,12 +8,12 @@ import com.github.arteam.simplejsonrpc.core.annotation.JsonRpcMethod;
  */
 public class BaseService {
 
-    @JsonRpcMethod
+    @External
     public boolean isAlive() {
         return true;
     }
 
-    @JsonRpcMethod
+    @External
     public void updateCache() {
         new Thread(new Runnable() {
             @Override

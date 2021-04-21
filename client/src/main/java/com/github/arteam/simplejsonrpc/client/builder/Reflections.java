@@ -8,10 +8,10 @@ import com.github.arteam.simplejsonrpc.client.generator.IdGenerator;
 import com.github.arteam.simplejsonrpc.client.metadata.ClassMetadata;
 import com.github.arteam.simplejsonrpc.client.metadata.MethodMetadata;
 import com.github.arteam.simplejsonrpc.client.metadata.ParameterMetadata;
-import com.github.arteam.simplejsonrpc.core.annotation.JsonRpcMethod;
+import com.github.arteam.simplejsonrpc.core.annotation.External;
 import com.github.arteam.simplejsonrpc.core.annotation.JsonRpcOptional;
 import com.github.arteam.simplejsonrpc.core.annotation.JsonRpcParam;
-import com.github.arteam.simplejsonrpc.core.annotation.JsonRpcService;
+import com.github.arteam.simplejsonrpc.core.annotation.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -42,7 +42,7 @@ class Reflections {
         Map<Method, MethodMetadata> methodsMetadata = new HashMap<Method, MethodMetadata>(32);
         Class<?> searchClass = clazz;
         while (searchClass != null) {
-            JsonRpcService rpcServiceAnn = getAnnotation(searchClass.getAnnotations(), JsonRpcService.class);
+            Contract rpcServiceAnn = getAnnotation(searchClass.getAnnotations(), Contract.class);
             if (rpcServiceAnn == null) {
                 throw new IllegalStateException("Class '" + clazz.getCanonicalName() +
                         "' is not annotated as @JsonRpcService");
@@ -50,7 +50,7 @@ class Reflections {
             Method[] methods = searchClass.getMethods();
             for (Method method : methods) {
                 Annotation[] methodAnnotations = method.getDeclaredAnnotations();
-                JsonRpcMethod rpcMethodAnn = getAnnotation(methodAnnotations, JsonRpcMethod.class);
+                External rpcMethodAnn = getAnnotation(methodAnnotations, External.class);
                 if (rpcMethodAnn == null) {
                     throw new IllegalStateException("Method '" + method.getName() + "' is not annotated as @JsonRpcMethod");
                 }
