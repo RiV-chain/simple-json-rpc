@@ -10,7 +10,7 @@ import com.github.arteam.simplejsonrpc.client.metadata.MethodMetadata;
 import com.github.arteam.simplejsonrpc.client.metadata.ParameterMetadata;
 import com.github.arteam.simplejsonrpc.core.annotation.External;
 import com.github.arteam.simplejsonrpc.core.annotation.JsonRpcOptional;
-import com.github.arteam.simplejsonrpc.core.annotation.JsonRpcParam;
+import com.github.arteam.simplejsonrpc.core.annotation.Param;
 import com.github.arteam.simplejsonrpc.core.annotation.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -61,7 +61,7 @@ class Reflections {
                 for (int i = 0; i < parametersAnnotations.length; i++) {
                     Annotation[] parametersAnnotation = parametersAnnotations[i];
                     // Check that it's a JSON-RPC param
-                    JsonRpcParam rpcParamAnn = getAnnotation(parametersAnnotation, JsonRpcParam.class);
+                    Param rpcParamAnn = getAnnotation(parametersAnnotation, Param.class);
                     if (rpcParamAnn == null) {
                         throw new IllegalStateException("Parameter with index=" + i + " of method '" + method.getName() +
                                 "' is not annotated with @JsonRpcParam");

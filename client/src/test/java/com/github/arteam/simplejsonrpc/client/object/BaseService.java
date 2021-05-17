@@ -4,7 +4,7 @@ import com.github.arteam.simplejsonrpc.client.JsonRpcParams;
 import com.github.arteam.simplejsonrpc.client.ParamsType;
 import com.github.arteam.simplejsonrpc.client.domain.Player;
 import com.github.arteam.simplejsonrpc.core.annotation.External;
-import com.github.arteam.simplejsonrpc.core.annotation.JsonRpcParam;
+import com.github.arteam.simplejsonrpc.core.annotation.Param;
 import com.github.arteam.simplejsonrpc.core.annotation.Contract;
 
 import java.util.List;
@@ -25,8 +25,8 @@ public interface BaseService {
     Player getPlayer();
 
     @External
-    long login(@JsonRpcParam("login") String login, @JsonRpcParam("password") String password);
+    long login(@Param("login") String login, @Param("password") String password);
 
     @External
-    void logout(@JsonRpcParam("token") String token);
+    void logout(@Param("token") String token);
 }

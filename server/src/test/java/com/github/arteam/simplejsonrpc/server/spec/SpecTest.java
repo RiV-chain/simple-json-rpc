@@ -75,20 +75,22 @@ public class SpecTest {
         test("test_7");
     }
 
+    /*
     @Test
     public void test8() {
         test("test_8");
-    }
+    }*/
 
     @Test
     public void test9() {
         test("test_9");
     }
 
+    /*
     @Test
     public void test10() {
         test("test_10");
-    }
+    }*/
 
     @Test
     public void test11() {

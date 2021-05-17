@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ContainerNode;
-import com.fasterxml.jackson.databind.node.NullNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.ValueNode;
 import com.github.arteam.simplejsonrpc.core.annotation.Error;
@@ -17,7 +16,6 @@ import com.github.arteam.simplejsonrpc.server.metadata.ErrorDataResolver;
 import com.github.arteam.simplejsonrpc.server.metadata.MethodMetadata;
 import com.github.arteam.simplejsonrpc.server.metadata.ParameterMetadata;
 import com.google.common.base.Defaults;
-import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.base.Throwables;
 import com.google.common.cache.CacheBuilder;
@@ -151,9 +149,10 @@ public class JsonRpcServer {
      * @param textRequest text representation of a JSON-RPC request
      * @param service     actual service for the request processing
      * @return text representation of a JSON-RPC response
+     * @throws IOException 
      */
     @NotNull
-    public String handle(@NotNull String textRequest, @NotNull Object service) {
+    public String handle(@NotNull String textRequest, @NotNull Object service) throws IOException {
         JsonNode rootRequest;
         try {
             rootRequest = mapper.readTree(textRequest);
@@ -162,7 +161,8 @@ public class JsonRpcServer {
             }
         } catch (IOException e) {
             log.error("Bad json request", e);
-            return toJson(new ErrorResponse(PARSE_ERROR));
+            //return toJson(new ErrorResponse(PARSE_ERROR));
+            throw e;
         }
 
         // Check if a single request or a batch
