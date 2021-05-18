@@ -1,7 +1,7 @@
 package com.github.arteam.simplejsonrpc.server.spec;
 
 import com.github.arteam.simplejsonrpc.core.annotation.External;
-import com.github.arteam.simplejsonrpc.core.annotation.Param;
+import com.github.arteam.simplejsonrpc.core.annotation.JsonRpcParam;
 import com.github.arteam.simplejsonrpc.core.annotation.Contract;
 
 /**
@@ -12,20 +12,20 @@ import com.github.arteam.simplejsonrpc.core.annotation.Contract;
 public class CalculatorService {
 
     @External
-    public long subtract(@Param("minuend") int m, @Param("subtrahend") int s) {
+    public long subtract(@JsonRpcParam("minuend") int m, @JsonRpcParam("subtrahend") int s) {
         return (long) m - (long) s;
     }
 
     @External
-    public long sum(@Param("first") int first, @Param("second") int second,
-                    @Param("third") int third) {
+    public long sum(@JsonRpcParam("first") int first, @JsonRpcParam("second") int second,
+                    @JsonRpcParam("third") int third) {
         return (long) first + (long) second + (long) third;
     }
 
     @External
-    public void update(@Param("i1") int i1, @Param("i2") int i2,
-                       @Param("i3") int i3, @Param("i4") int i4,
-                       @Param("i5") int i5) {
+    public void update(@JsonRpcParam("i1") int i1, @JsonRpcParam("i2") int i2,
+                       @JsonRpcParam("i3") int i3, @JsonRpcParam("i4") int i4,
+                       @JsonRpcParam("i5") int i5) {
         System.out.println("Update");
     }
 

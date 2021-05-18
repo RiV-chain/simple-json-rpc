@@ -3,7 +3,7 @@ package com.github.arteam.simplejsonrpc.server;
 import com.github.arteam.simplejsonrpc.core.annotation.JsonRpcErrorData;
 import com.github.arteam.simplejsonrpc.core.annotation.External;
 import com.github.arteam.simplejsonrpc.core.annotation.JsonRpcOptional;
-import com.github.arteam.simplejsonrpc.core.annotation.Param;
+import com.github.arteam.simplejsonrpc.core.annotation.JsonRpcParam;
 import com.github.arteam.simplejsonrpc.core.annotation.Contract;
 import com.github.arteam.simplejsonrpc.server.metadata.ClassMetadata;
 import com.github.arteam.simplejsonrpc.server.metadata.ErrorDataResolver;
@@ -125,7 +125,7 @@ class Reflections {
         ImmutableMap.Builder<String, ParameterMetadata> parametersMetadata = ImmutableMap.builder();
         for (int i = 0; i < methodParamsSize; i++) {
             Annotation[] parameterAnnotations = allParametersAnnotations[i];
-            Param jsonRpcParam = Reflections.getAnnotation(parameterAnnotations, Param.class);
+            JsonRpcParam jsonRpcParam = Reflections.getAnnotation(parameterAnnotations, JsonRpcParam.class);
             if (jsonRpcParam == null) {
                 log.warn("Annotation @JsonRpcParam is not set for the " + i +
                         " parameter of a method '" + method.getName() + "'");

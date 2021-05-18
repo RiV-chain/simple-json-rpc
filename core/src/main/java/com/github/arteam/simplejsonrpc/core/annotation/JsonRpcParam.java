@@ -18,7 +18,7 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Param {
+public @interface JsonRpcParam {
 
     /**
      * RPC method parameter name. <b>MUST</b> be specified.
