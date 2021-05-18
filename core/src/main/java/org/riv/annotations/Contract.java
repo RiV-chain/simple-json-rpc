@@ -1,4 +1,4 @@
-package com.github.arteam.simplejsonrpc.core.annotation;
+package org.riv.annotations;
 
 import java.lang.annotation.*;
 

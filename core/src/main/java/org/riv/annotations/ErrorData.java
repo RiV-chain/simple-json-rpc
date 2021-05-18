@@ -1,4 +1,4 @@
-package com.github.arteam.simplejsonrpc.core.annotation;
+package org.riv.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -10,6 +10,6 @@ import java.lang.annotation.Target;
  */
 @Target({ElementType.FIELD, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface JsonRpcErrorData {
+public @interface ErrorData {
 
 }
