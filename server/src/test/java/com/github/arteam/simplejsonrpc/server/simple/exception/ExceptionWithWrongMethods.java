@@ -1,7 +1,7 @@
 package com.github.arteam.simplejsonrpc.server.simple.exception;
 
-import com.github.arteam.simplejsonrpc.core.annotation.Error;
-import com.github.arteam.simplejsonrpc.core.annotation.JsonRpcErrorData;
+import org.riv.annotations.Error;
+import org.riv.annotations.ErrorData;
 
 @Error(code = -30005, message = "Error with wrong methods")
 public class ExceptionWithWrongMethods extends RuntimeException {
@@ -13,16 +13,16 @@ public class ExceptionWithWrongMethods extends RuntimeException {
         this.data = data;
     }
 
-    @JsonRpcErrorData
+    @ErrorData
     public void returnVoid() {
     }
 
-    @JsonRpcErrorData
+    @ErrorData
     public String hasArgs(String s) {
         return s;
     }
 
-    @JsonRpcErrorData
+    @ErrorData
     public String[] getData() {
         return data;
     }

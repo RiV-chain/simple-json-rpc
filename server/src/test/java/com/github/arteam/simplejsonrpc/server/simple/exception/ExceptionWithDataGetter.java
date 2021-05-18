@@ -1,7 +1,7 @@
 package com.github.arteam.simplejsonrpc.server.simple.exception;
 
-import com.github.arteam.simplejsonrpc.core.annotation.Error;
-import com.github.arteam.simplejsonrpc.core.annotation.JsonRpcErrorData;
+import org.riv.annotations.Error;
+import org.riv.annotations.ErrorData;
 
 @Error(code = -30001, message = "Error with data (getter)")
 public class ExceptionWithDataGetter extends RuntimeException {
@@ -13,7 +13,7 @@ public class ExceptionWithDataGetter extends RuntimeException {
         this.data = data;
     }
 
-    @JsonRpcErrorData
+    @ErrorData
     public String[] getData() {
         return data;
     }

@@ -8,12 +8,13 @@ import com.github.arteam.simplejsonrpc.client.generator.IdGenerator;
 import com.github.arteam.simplejsonrpc.client.metadata.ClassMetadata;
 import com.github.arteam.simplejsonrpc.client.metadata.MethodMetadata;
 import com.github.arteam.simplejsonrpc.client.metadata.ParameterMetadata;
-import com.github.arteam.simplejsonrpc.core.annotation.External;
-import com.github.arteam.simplejsonrpc.core.annotation.JsonRpcOptional;
-import com.github.arteam.simplejsonrpc.core.annotation.JsonRpcParam;
-import com.github.arteam.simplejsonrpc.core.annotation.Contract;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.riv.annotations.Contract;
+import org.riv.annotations.External;
+import org.riv.annotations.OptionalParameter;
+import org.riv.annotations.Parameter;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -61,13 +62,13 @@ class Reflections {
                 for (int i = 0; i < parametersAnnotations.length; i++) {
                     Annotation[] parametersAnnotation = parametersAnnotations[i];
                     // Check that it's a JSON-RPC param
-                    JsonRpcParam rpcParamAnn = getAnnotation(parametersAnnotation, JsonRpcParam.class);
+                    Parameter rpcParamAnn = getAnnotation(parametersAnnotation, Parameter.class);
                     if (rpcParamAnn == null) {
                         throw new IllegalStateException("Parameter with index=" + i + " of method '" + method.getName() +
                                 "' is not annotated with @JsonRpcParam");
                     }
                     // Check that's a param could be an optional
-                    JsonRpcOptional optionalAnn = getAnnotation(parametersAnnotation, JsonRpcOptional.class);
+                    OptionalParameter optionalAnn = getAnnotation(parametersAnnotation, OptionalParameter.class);
                     ParameterMetadata parameterMetadata = new ParameterMetadata(i, optionalAnn != null);
                     if (paramsMetadata.put(rpcParamAnn.value(), parameterMetadata) != null) {
                         throw new IllegalStateException("Two parameters of method '" + method.getName() + "' have the " +

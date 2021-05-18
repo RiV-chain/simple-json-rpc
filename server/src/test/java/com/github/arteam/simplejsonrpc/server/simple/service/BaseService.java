@@ -1,6 +1,6 @@
 package com.github.arteam.simplejsonrpc.server.simple.service;
 
-import com.github.arteam.simplejsonrpc.core.annotation.External;
+import org.riv.annotations.External;
 
 /**
  * Date: 7/30/14

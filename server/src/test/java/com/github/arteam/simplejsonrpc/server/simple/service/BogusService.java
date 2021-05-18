@@ -1,7 +1,7 @@
 package com.github.arteam.simplejsonrpc.server.simple.service;
 
-import com.github.arteam.simplejsonrpc.core.annotation.External;
-import com.github.arteam.simplejsonrpc.core.annotation.Contract;
+import org.riv.annotations.Contract;
+import org.riv.annotations.External;
 
 /**
  * Date: 8/2/14

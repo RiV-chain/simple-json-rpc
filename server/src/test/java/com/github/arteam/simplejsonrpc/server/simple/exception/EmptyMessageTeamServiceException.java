@@ -1,6 +1,6 @@
 package com.github.arteam.simplejsonrpc.server.simple.exception;
 
-import com.github.arteam.simplejsonrpc.core.annotation.Error;
+import org.riv.annotations.Error;
 
 /**
  * Date: 7/31/14

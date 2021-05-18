@@ -1,7 +1,7 @@
 package com.github.arteam.simplejsonrpc.server.simple.exception;
 
-import com.github.arteam.simplejsonrpc.core.annotation.Error;
-import com.github.arteam.simplejsonrpc.core.annotation.JsonRpcErrorData;
+import org.riv.annotations.Error;
+import org.riv.annotations.ErrorData;
 
 @Error(code = -30003, message = "Error with data (multiple getters)")
 public class ExceptionWithDataMultipleGetters extends RuntimeException {
@@ -15,12 +15,12 @@ public class ExceptionWithDataMultipleGetters extends RuntimeException {
         this.anotherData = anotherData;
     }
 
-    @JsonRpcErrorData
+    @ErrorData
     public String[] getData() {
         return data;
     }
 
-    @JsonRpcErrorData
+    @ErrorData
     public String getAnotherData() {
         return anotherData;
     }

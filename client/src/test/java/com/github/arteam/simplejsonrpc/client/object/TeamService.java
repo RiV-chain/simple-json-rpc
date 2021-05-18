@@ -6,12 +6,13 @@ import com.github.arteam.simplejsonrpc.client.ParamsType;
 import com.github.arteam.simplejsonrpc.client.domain.Player;
 import com.github.arteam.simplejsonrpc.client.domain.Position;
 import com.github.arteam.simplejsonrpc.client.domain.Team;
-import com.github.arteam.simplejsonrpc.core.annotation.External;
-import com.github.arteam.simplejsonrpc.core.annotation.JsonRpcOptional;
-import com.github.arteam.simplejsonrpc.core.annotation.JsonRpcParam;
-import com.github.arteam.simplejsonrpc.core.annotation.Contract;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.riv.annotations.Contract;
+import org.riv.annotations.External;
+import org.riv.annotations.OptionalParameter;
+import org.riv.annotations.Parameter;
 
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -29,40 +30,40 @@ import java.util.Optional;
 public interface TeamService extends BaseService {
 
     @External
-    boolean add(@JsonRpcParam("player") Player s);
+    boolean add(@Parameter("player") Player s);
 
     @External("find_by_birth_year")
-    List<Player> findByBirthYear(@JsonRpcParam("birth_year") int birthYear);
+    List<Player> findByBirthYear(@Parameter("birth_year") int birthYear);
 
     @External
-    Player findByInitials(@JsonRpcParam("firstName") String firstName,
-                          @JsonRpcParam("lastName") String lastName);
+    Player findByInitials(@Parameter("firstName") String firstName,
+                          @Parameter("lastName") String lastName);
 
     @External("findByInitials")
-    Optional<Player> optionalFindByInitials(@JsonRpcParam("firstName") String firstName,
-                                            @JsonRpcParam("lastName") String lastName);
+    Optional<Player> optionalFindByInitials(@Parameter("firstName") String firstName,
+                                            @Parameter("lastName") String lastName);
 
     @External
-    List<Player> find(@JsonRpcOptional @JsonRpcParam("position") @Nullable Position position,
-                      @JsonRpcOptional @JsonRpcParam("number") int number,
-                      @JsonRpcOptional @JsonRpcParam("team") @NotNull Optional<Team> team,
-                      @JsonRpcOptional @JsonRpcParam("firstName") @Nullable String firstName,
-                      @JsonRpcOptional @JsonRpcParam("lastName") @Nullable String lastName,
-                      @JsonRpcOptional @JsonRpcParam("birthDate") @Nullable Date birthDate,
-                      @JsonRpcOptional @JsonRpcParam("capHit") @NotNull Optional<Double> capHit);
+    List<Player> find(@OptionalParameter @Parameter("position") @Nullable Position position,
+                      @OptionalParameter @Parameter("number") int number,
+                      @OptionalParameter @Parameter("team") @NotNull Optional<Team> team,
+                      @OptionalParameter @Parameter("firstName") @Nullable String firstName,
+                      @OptionalParameter @Parameter("lastName") @Nullable String lastName,
+                      @OptionalParameter @Parameter("birthDate") @Nullable Date birthDate,
+                      @OptionalParameter @Parameter("capHit") @NotNull Optional<Double> capHit);
 
     @External
-    Player findByCapHit(@JsonRpcParam("cap") double capHit);
+    Player findByCapHit(@Parameter("cap") double capHit);
 
     @External
-    List<Player> findPlayersByFirstNames(@JsonRpcParam("names") List<String> names);
+    List<Player> findPlayersByFirstNames(@Parameter("names") List<String> names);
 
     @External
-    List<Player> findPlayersByNumbers(@JsonRpcParam("numbers") int... numbers);
+    List<Player> findPlayersByNumbers(@Parameter("numbers") int... numbers);
 
     @External
-    <T> List<Player> genericFindPlayersByNumbers(@JsonRpcParam("numbers") T... numbers);
+    <T> List<Player> genericFindPlayersByNumbers(@Parameter("numbers") T... numbers);
 
     @External
-    LinkedHashMap<String, Double> getContractSums(@JsonRpcParam("contractLengths") Map<String, ? extends Number> contractLengths);
+    LinkedHashMap<String, Double> getContractSums(@Parameter("contractLengths") Map<String, ? extends Number> contractLengths);
 }

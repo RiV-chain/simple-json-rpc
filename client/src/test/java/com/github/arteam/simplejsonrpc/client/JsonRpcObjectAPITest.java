@@ -7,14 +7,14 @@ import com.github.arteam.simplejsonrpc.client.exception.JsonRpcException;
 import com.github.arteam.simplejsonrpc.client.object.FixedIntegerIdGenerator;
 import com.github.arteam.simplejsonrpc.client.object.FixedStringIdGenerator;
 import com.github.arteam.simplejsonrpc.client.object.TeamService;
-import com.github.arteam.simplejsonrpc.core.annotation.External;
-import com.github.arteam.simplejsonrpc.core.annotation.JsonRpcParam;
-import com.github.arteam.simplejsonrpc.core.annotation.Contract;
 import com.github.arteam.simplejsonrpc.core.domain.ErrorMessage;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.ISODateTimeFormat;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.riv.annotations.Contract;
+import org.riv.annotations.External;
+import org.riv.annotations.Parameter;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -176,7 +176,7 @@ public class JsonRpcObjectAPITest extends BaseClientTest {
     static interface BogusTeamService {
 
         @External
-        void bogusLogin(String username, @JsonRpcParam("password") String password);
+        void bogusLogin(String username, @Parameter("password") String password);
     }
 
     @Test
@@ -196,7 +196,7 @@ public class JsonRpcObjectAPITest extends BaseClientTest {
     @Contract
     public static interface MethodIsNotAnnotatedService {
 
-        boolean find(@JsonRpcParam("name") String name);
+        boolean find(@Parameter("name") String name);
     }
 
     @Test
@@ -217,7 +217,7 @@ public class JsonRpcObjectAPITest extends BaseClientTest {
     static interface DuplicateParametersService {
 
         @External
-        boolean find(@JsonRpcParam("code") String username, @JsonRpcParam("code") String code, @JsonRpcParam("number") int number);
+        boolean find(@Parameter("code") String username, @Parameter("code") String code, @Parameter("number") int number);
     }
 
     @Test

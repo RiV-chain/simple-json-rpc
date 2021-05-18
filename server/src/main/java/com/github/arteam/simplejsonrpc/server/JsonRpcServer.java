@@ -10,7 +10,6 @@ import com.fasterxml.jackson.databind.node.ContainerNode;
 import com.fasterxml.jackson.databind.node.NullNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.ValueNode;
-import com.github.arteam.simplejsonrpc.core.annotation.Error;
 import com.github.arteam.simplejsonrpc.core.domain.*;
 import com.github.arteam.simplejsonrpc.server.metadata.ClassMetadata;
 import com.github.arteam.simplejsonrpc.server.metadata.ErrorDataResolver;
@@ -26,6 +25,7 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.riv.annotations.Error;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

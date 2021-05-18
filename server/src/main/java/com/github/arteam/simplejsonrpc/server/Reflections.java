@@ -1,10 +1,5 @@
 package com.github.arteam.simplejsonrpc.server;
 
-import com.github.arteam.simplejsonrpc.core.annotation.JsonRpcErrorData;
-import com.github.arteam.simplejsonrpc.core.annotation.External;
-import com.github.arteam.simplejsonrpc.core.annotation.JsonRpcOptional;
-import com.github.arteam.simplejsonrpc.core.annotation.JsonRpcParam;
-import com.github.arteam.simplejsonrpc.core.annotation.Contract;
 import com.github.arteam.simplejsonrpc.server.metadata.ClassMetadata;
 import com.github.arteam.simplejsonrpc.server.metadata.ErrorDataResolver;
 import com.github.arteam.simplejsonrpc.server.metadata.MethodMetadata;
@@ -12,6 +7,11 @@ import com.github.arteam.simplejsonrpc.server.metadata.ParameterMetadata;
 import com.google.common.collect.ImmutableMap;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.riv.annotations.Contract;
+import org.riv.annotations.ErrorData;
+import org.riv.annotations.External;
+import org.riv.annotations.OptionalParameter;
+import org.riv.annotations.Parameter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -125,7 +125,7 @@ class Reflections {
         ImmutableMap.Builder<String, ParameterMetadata> parametersMetadata = ImmutableMap.builder();
         for (int i = 0; i < methodParamsSize; i++) {
             Annotation[] parameterAnnotations = allParametersAnnotations[i];
-            JsonRpcParam jsonRpcParam = Reflections.getAnnotation(parameterAnnotations, JsonRpcParam.class);
+            Parameter jsonRpcParam = Reflections.getAnnotation(parameterAnnotations, Parameter.class);
             if (jsonRpcParam == null) {
                 log.warn("Annotation @JsonRpcParam is not set for the " + i +
                         " parameter of a method '" + method.getName() + "'");
@@ -133,7 +133,7 @@ class Reflections {
             }
 
             String paramName = jsonRpcParam.value();
-            boolean optional = Reflections.getAnnotation(parameterAnnotations, JsonRpcOptional.class) != null;
+            boolean optional = Reflections.getAnnotation(parameterAnnotations, OptionalParameter.class) != null;
             parametersMetadata.put(paramName, new ParameterMetadata(paramName, parameterTypes[i],
                     genericParameterTypes[i], i, optional));
         }
@@ -153,7 +153,7 @@ class Reflections {
         Method dataMethod = null;
         while (c != null) {
             for (Field field : c.getDeclaredFields()) {
-                if (field.isAnnotationPresent(JsonRpcErrorData.class)) {
+                if (field.isAnnotationPresent(ErrorData.class)) {
                     if (dataField != null) {
                         throw new IllegalArgumentException("Ambiguous configuration: there is more than one " +
                                 "@JsonRpcErrorData annotated property in " + c.getName());
@@ -163,7 +163,7 @@ class Reflections {
                 }
             }
             for (Method method : c.getDeclaredMethods()) {
-                if (method.isAnnotationPresent(JsonRpcErrorData.class)) {
+                if (method.isAnnotationPresent(ErrorData.class)) {
                     if (method.getReturnType() == void.class) {
                         log.warn("Method '{}' annotated with 'JsonRpcErrorData' cannot have void return type", method.getName());
                         continue;
