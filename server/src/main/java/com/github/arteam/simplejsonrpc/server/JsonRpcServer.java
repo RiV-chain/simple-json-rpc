@@ -184,6 +184,47 @@ public class JsonRpcServer {
         log.error("Invalid JSON-RPC request: " + rootRequest);
         return toJson(new ErrorResponse(INVALID_REQUEST));
     }
+    
+    /**
+     * Handles a JSON-RPC request(single or batch),
+     * delegates processing to the service, and returns a JSON-RPC response with error.
+     *
+     * @param textRequest text representation of a JSON-RPC request
+     * @param service     actual service for the request processing
+     * @return text representation of a JSON-RPC response
+     */
+    @NotNull
+    public Object handleWithError(@NotNull String textRequest, @NotNull Object service) {
+        JsonNode rootRequest;
+        try {
+            rootRequest = mapper.readTree(textRequest);
+            if (log.isDebugEnabled()) {
+                log.debug("Request : {}", mapper.writeValueAsString(rootRequest));
+            }
+        } catch (IOException e) {
+            log.error("Bad json request", e);
+            return new ErrorResponse(PARSE_ERROR);
+        }
+
+        // Check if a single request or a batch
+        if (rootRequest.isObject()) {
+            Response response = handleWrapper(rootRequest, service);
+            return isNotification(rootRequest, response) ? "" : toJson(response);
+        } else if (rootRequest.isArray() && rootRequest.size() > 0) {
+            ArrayNode responses = mapper.createArrayNode();
+            for (JsonNode request : (ArrayNode) rootRequest) {
+                Response response = handleWrapper(request, service);
+                if (!isNotification(request, response)) {
+                    responses.add(mapper.convertValue(response, ObjectNode.class));
+                }
+            }
+
+            return responses.size() > 0 ? toJson(responses) : "";
+        }
+
+        log.error("Invalid JSON-RPC request: " + rootRequest);
+        return new ErrorResponse(INVALID_REQUEST);
+    }
 
     /**
      * Check if request is a "notification request" according to the standard.
@@ -413,7 +454,7 @@ public class JsonRpcServer {
      * @return JSON representation
      */
     @NotNull
-    private String toJson(@NotNull Object value) {
+    public String toJson(@NotNull Object value) {
         try {
             String response = mapper.writeValueAsString(value);
             if (log.isDebugEnabled()) {
